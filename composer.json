@@ -1,0 +1,22 @@
+{
+    "name": "procergs/meurs-monitor-bundle",
+    "type": "symfony-bundle",
+    "description": "Monitor Bundle to be used by PROCERGS",
+    "keywords": ["login-cidadao", "monitor"],
+    "homepage": "https://github.com/PROCERGS/meurs-monitor-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Guilherme Donato",
+            "email": "packagist@cadastro.dona.to"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "liip/monitor-bundle": "^2.2"
+    },
+    "autoload": {
+        "psr-0": { "PROCERGS\\LoginCidadao\\MonitorBundle": "" }
+    },
+    "target-dir": "PROCERGS/LoginCidadao/MonitorBundle"
+}

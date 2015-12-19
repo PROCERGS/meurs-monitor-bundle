@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Status Meu RS{% endblock %}
+
+{% block body %}
+    {% if results|length == 1 %}
+        {{ results[0].result }}
+    {% else %}
+        <style scoped>
+            dl dt {
+                font-weight: bold;
+            }
+            .fail {
+                color: #f00;
+            }
+            .success {
+                color: #0f0;
+            }
+        </style>
+        <dl>
+            {% for result in results %}
+                <dt>{{ result.check }}
+                <dd class="{{ result.code == 0 ? 'success' : 'fail' }}">{{ result.result }}</dd>
+            {% endfor %}
+        </dl>
+    {% endif %}
+{% endblock %}
