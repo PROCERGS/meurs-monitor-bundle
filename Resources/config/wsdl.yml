@@ -1,0 +1,10 @@
+services:
+    procergs.monitor.check.wsdl.builder:
+        class: PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl
+        abstract: true
+        arguments:
+            - 'WSDL Url'
+            - 'Label'
+            - false
+        tags:
+            - { name: liip_monitor.check, alias: wsdl }

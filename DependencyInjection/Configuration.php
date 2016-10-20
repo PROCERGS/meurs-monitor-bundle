@@ -18,11 +18,38 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('procergs__monitor');
+        $rootNode = $treeBuilder->root('procergs_monitor');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->arrayNode('checks')
+                    ->children()
+                        ->arrayNode('wsdl')
+                            ->useAttributeAsKey('name')
+                            ->prototype('array')
+                                ->children()
+                                    ->scalarNode('label')
+                                        ->info('The name of this check')
+                                        ->example('My WSDL Check')
+                                        ->defaultNull()
+                                    ->end()
+                                    ->scalarNode('url')
+                                        ->info('URL where the WDSL can be found.')
+                                        ->example('https://some.domain.tld/service.wsdl')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
+                                    ->end()
+                                    ->booleanNode('ignore_https_errors')
+                                        ->info('When true, errors such as invalid TLS certificates will be ignored')
+                                        ->defaultFalse()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }
