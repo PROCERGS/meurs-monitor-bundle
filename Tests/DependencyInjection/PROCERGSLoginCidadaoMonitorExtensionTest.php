@@ -14,7 +14,7 @@ class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCa
         $container = $this->createContainer();
         $container->registerExtension(new PROCERGSLoginCidadaoMonitorExtension());
         $container->loadFromExtension(
-            'procergs_monitor',
+            'procergs_login_cidadao_monitor',
             [
                 'checks' => [
                     'wsdl' => [

@@ -24,10 +24,8 @@ class PROCERGSLoginCidadaoMonitorExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
         if (!empty($config['checks']) && !empty($config['checks']['wsdl'])) {
-            $this->registerWsdlChecks($config['checks']['wsdl'], $container, $loader);
+            $this->registerWsdlChecks($config['checks']['wsdl'], $container);
         }
     }
 
@@ -36,10 +34,8 @@ class PROCERGSLoginCidadaoMonitorExtension extends Extension
         return 'procergs_login_cidadao_monitor';
     }
 
-    private function registerWsdlChecks($checks, ContainerBuilder $container, LoaderInterface $loader)
+    private function registerWsdlChecks($checks, ContainerBuilder $container)
     {
-        $loader->load('wsdl.yml');
-
         foreach ($checks as $name => $options) {
             $check = new Definition('PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl');
             $check->setArguments([$options['url'], $options['label'], $options['ignore_https_errors']]);
