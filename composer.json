@@ -20,6 +20,9 @@
         "symfony/phpunit-bridge": "~2.7|~3.0",
         "phpunit/phpunit": "4.*"
     },
+    "suggest": {
+        "ejsmont-artur/php-circuit-breaker-bundle": "Allows a Circuit Breaker to be notified of a check's failure."
+    },
     "autoload": {
         "psr-0": { "PROCERGS\\LoginCidadao\\MonitorBundle": "" }
     },
