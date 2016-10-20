@@ -33,7 +33,7 @@ class PROCERGSLoginCidadaoMonitorExtension extends Extension
 
     public function getAlias()
     {
-        return 'procergs_monitor';
+        return 'procergs_login_cidadao_monitor';
     }
 
     private function registerWsdlChecks($checks, ContainerBuilder $container, LoaderInterface $loader)
