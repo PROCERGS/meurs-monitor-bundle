@@ -22,6 +22,10 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('circuit_breaker')
+                    ->defaultNull()
+                    ->cannotBeEmpty()
+                ->end()
                 ->arrayNode('checks')
                     ->children()
                         ->arrayNode('wsdl')
@@ -43,6 +47,7 @@ class Configuration implements ConfigurationInterface
                                         ->info('When true, errors such as invalid TLS certificates will be ignored')
                                         ->defaultFalse()
                                     ->end()
+                                    ->scalarNode('circuit_breaker_service_id')->end()
                                 ->end()
                             ->end()
                         ->end()

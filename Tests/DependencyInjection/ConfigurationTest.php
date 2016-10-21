@@ -56,9 +56,25 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $config);
     }
 
+    public function testCircuitBreaker()
+    {
+        $configs = [
+            ['circuit_breaker' => 'circuit_breaker.service'],
+        ];
+
+        $processor = new Processor();
+        $config = $processor->processConfiguration(new Configuration(), $configs);
+
+        $expected = self::getBundleDefaultConfig();
+        $expected['circuit_breaker'] = 'circuit_breaker.service';
+
+        $this->assertEquals($expected, $config);
+    }
+
     protected static function getBundleDefaultConfig()
     {
         return [
+            'circuit_breaker' => null
         ];
     }
 }

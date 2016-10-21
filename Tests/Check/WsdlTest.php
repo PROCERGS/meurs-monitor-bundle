@@ -63,16 +63,15 @@ class WsdlTest extends \PHPUnit_Framework_TestCase
         $checker->setCircuitBreaker($circuitBreaker)
             ->setCircuitBreakerServiceId('service');
 
+        $this->success = false;
         $circuitBreaker->expects($this->any())
             ->method('reportFailure')
-            ->will($this->throwException(new \Exception('Success')));
+            ->willReturnCallback(function () {
+                $this->success = true;
+            });
 
-        try {
-            $checker->check();
-            $this->fail("Didn't call circuit breaker!");
-        } catch (\Exception $e) {
-            $this->assertEquals('Success', $e->getMessage());
-        }
+        $checker->check();
+        $this->assertTrue($this->success);
     }
 
     private function getWsdlCheck($url = 'https://dum.my/service.wsdl', $label = null, $ignoreHttpsChecks = false)

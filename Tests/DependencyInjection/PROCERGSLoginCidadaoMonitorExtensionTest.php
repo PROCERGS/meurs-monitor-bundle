@@ -4,7 +4,9 @@ namespace PROCERGS\LoginCidadao\MonitorBundle\Tests\DependencyInjection;
 
 use PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl;
 use PROCERGS\LoginCidadao\MonitorBundle\DependencyInjection\PROCERGSLoginCidadaoMonitorExtension;
+use SebastianBergmann\GlobalState\RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCase
@@ -12,13 +14,18 @@ class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCa
     public function testLoadSetParameters()
     {
         $container = $this->createContainer();
+        $circuitBreaker = $this->registerCircuitBreaker($container);
         $container->registerExtension(new PROCERGSLoginCidadaoMonitorExtension());
         $container->loadFromExtension(
             'procergs_login_cidadao_monitor',
             [
+                'circuit_breaker' => 'circuit_breaker',
                 'checks' => [
                     'wsdl' => [
-                        'test1' => ['url' => 'https://lerolero'],
+                        'test1' => [
+                            'url' => 'https://lerolero',
+                            'circuit_breaker_service_id' => 'circuit_wsdl',
+                        ],
                         'test2' => ['url' => 'https://lerolero'],
                     ],
                 ],
@@ -26,13 +33,18 @@ class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCa
         );
         $this->compileContainer($container);
 
+        /** @var Wsdl $service1 */
         $service1 = $container->get('procergs.monitor.check.wsdl.test1');
         $service2 = $container->get('procergs.monitor.check.wsdl.test2');
 
+        $this->assertInstanceOf('Ejsmont\CircuitBreaker\CircuitBreakerInterface', $circuitBreaker);
         $this->assertInstanceOf('PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl', $service1);
         $this->assertInstanceOf('PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl', $service2);
     }
 
+    /**
+     * @return ContainerBuilder
+     */
     private function createContainer()
     {
         $container = new ContainerBuilder(
@@ -55,5 +67,18 @@ class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCa
         $container->getCompilerPassConfig()->setOptimizationPasses(array());
         $container->getCompilerPassConfig()->setRemovingPasses(array());
         $container->compile();
+    }
+
+    private function registerCircuitBreaker(ContainerBuilder $container)
+    {
+        $circuitBreaker = $this->getMockBuilder('Ejsmont\CircuitBreaker\CircuitBreakerInterface')
+            ->getMock();
+
+        $circuitBreaker->expects($this->any())
+            ->method('reportFailure')
+            ->will($this->throwException(new RuntimeException('Oops')));
+
+        $container->register('circuit_breaker', $circuitBreaker);
+        return $circuitBreaker;
     }
 }
