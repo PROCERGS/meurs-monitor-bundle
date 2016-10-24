@@ -47,7 +47,7 @@ class PROCERGSLoginCidadaoMonitorExtension extends Extension
 
         foreach ($checks as $name => $options) {
             $check = new Definition('PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl');
-            $check->setArguments([$options['url'], $options['label'], $options['ignore_https_errors']]);
+            $check->setArguments([$options['url'], $options['label'], $options['verify_https']]);
             if ($circuitBreaker && isset($options['circuit_breaker_service_id'])) {
                 $check->addMethodCall('setCircuitBreaker', [$circuitBreaker]);
                 $check->addMethodCall('setCircuitBreakerServiceId', [$options['circuit_breaker_service_id']]);

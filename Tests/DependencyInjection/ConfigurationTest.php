@@ -49,7 +49,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'test1' => [
                     'url' => 'https://lerolero',
                     'label' => null,
-                    'ignore_https_errors' => false,
+                    'verify_https' => false,
                 ],
             ],
         ];
