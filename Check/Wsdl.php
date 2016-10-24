@@ -67,14 +67,21 @@ class Wsdl implements CheckInterface
     public function check()
     {
         try {
-            @new SoapClient(
+            if (function_exists('xdebug_disable')) {
+                xdebug_disable();
+            }
+            @new \SoapClient(
                 $this->wsdlUrl,
                 array(
                     'cache_wsdl' => WSDL_CACHE_BOTH,
                     'trace' => true,
+                    'exceptions' => true,
                     'stream_context' => $this->context,
                 )
             );
+            if (function_exists('xdebug_enable')) {
+                xdebug_enable();
+            }
 
             return $this->success();
         } catch (\Exception $e) {

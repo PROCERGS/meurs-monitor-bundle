@@ -74,6 +74,14 @@ class WsdlTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->success);
     }
 
+    public function testCheckFails()
+    {
+        $checker = $this->getWsdlCheck();
+        $result = $checker->check();
+
+        $this->assertInstanceOf('ZendDiagnostics\Result\Failure', $result);
+    }
+
     private function getWsdlCheck($url = 'https://dum.my/service.wsdl', $label = null, $ignoreHttpsChecks = false)
     {
         return new Wsdl($url, $label, $ignoreHttpsChecks);
