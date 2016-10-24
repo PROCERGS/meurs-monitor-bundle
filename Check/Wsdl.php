@@ -38,14 +38,14 @@ class Wsdl implements CheckInterface
      * Wsdl constructor.
      * @param $wsdlUrl
      * @param null $label
-     * @param bool $ignoreHttpsChecks
+     * @param bool $verifyHttps
      */
-    public function __construct($wsdlUrl, $label = null, $ignoreHttpsChecks = false)
+    public function __construct($wsdlUrl, $label = null, $verifyHttps = true)
     {
         $this->label = $label;
         $this->wsdlUrl = $wsdlUrl;
 
-        if ($ignoreHttpsChecks) {
+        if (false === $verifyHttps) {
             $this->context = stream_context_create(
                 [
                     'ssl' => [
