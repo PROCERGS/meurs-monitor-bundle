@@ -84,6 +84,15 @@ class Wsdl implements CheckInterface
             }
 
             return $this->success();
+        } catch (\SoapFault $e) {
+            $error = error_get_last();
+            if ($error !== null && $error['message'] == $e->getMessage()) {
+                // Overwrites E_ERROR with E_USER_NOTICE as seen in http://stackoverflow.com/a/36667322
+                // Added @ to suppress the error
+                @trigger_error($e->getMessage());
+            }
+
+            return $this->failure();
         } catch (\Exception $e) {
             return $this->failure();
         }
