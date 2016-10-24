@@ -73,7 +73,7 @@ class Wsdl implements CheckInterface
             @new \SoapClient(
                 $this->wsdlUrl,
                 array(
-                    'cache_wsdl' => WSDL_CACHE_BOTH,
+                    'cache_wsdl' => WSDL_CACHE_NONE,
                     'trace' => true,
                     'exceptions' => true,
                     'stream_context' => $this->context,
