@@ -11,6 +11,7 @@
 namespace PROCERGS\LoginCidadao\MonitorBundle\Check;
 
 
+use BeSimple\SoapClient\SoapClient;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\ResultInterface;
@@ -66,7 +67,7 @@ class Wsdl implements CheckInterface
     public function check()
     {
         try {
-            @new \SoapClient(
+            @new SoapClient(
                 $this->wsdlUrl,
                 array(
                     'cache_wsdl' => WSDL_CACHE_BOTH,

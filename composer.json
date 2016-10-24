@@ -13,7 +13,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "liip/monitor-bundle": "^2.2"
+        "liip/monitor-bundle": "^2.2",
+        "besimple/soap": "^0.2.6"
     },
     "require-dev": {
         "symfony/expression-language": "~2.4|~3.0",
