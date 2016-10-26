@@ -55,23 +55,15 @@ class WsdlTest extends \PHPUnit_Framework_TestCase
 
     public function testCircuitBreakerNotification()
     {
-        $circuitBreaker = $this->getMockBuilder('Ejsmont\CircuitBreaker\CircuitBreakerInterface')
-            ->setMethods(['reportFailure'])
-            ->getMock();
+        $circuitBreaker = $this->prophesize('Ejsmont\CircuitBreaker\CircuitBreakerInterface');
+        $circuitBreaker->reportFailure('service')->shouldBeCalled();
+
         $checker = $this->getWsdlCheck();
 
-        $checker->setCircuitBreaker($circuitBreaker)
+        $checker->setCircuitBreaker($circuitBreaker->reveal())
             ->setCircuitBreakerServiceId('service');
 
-        $this->success = false;
-        $circuitBreaker->expects($this->any())
-            ->method('reportFailure')
-            ->willReturnCallback(function () {
-                $this->success = true;
-            });
-
         $checker->check();
-        $this->assertTrue($this->success);
     }
 
     public function testCheckFails()
