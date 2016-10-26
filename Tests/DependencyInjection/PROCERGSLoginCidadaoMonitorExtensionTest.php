@@ -74,10 +74,6 @@ class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCa
         $circuitBreaker = $this->getMockBuilder('Ejsmont\CircuitBreaker\CircuitBreakerInterface')
             ->getMock();
 
-        $circuitBreaker->expects($this->any())
-            ->method('reportFailure')
-            ->will($this->throwException(new RuntimeException('Oops')));
-
         $container->register('circuit_breaker', $circuitBreaker);
         return $circuitBreaker;
     }

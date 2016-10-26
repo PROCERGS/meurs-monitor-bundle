@@ -11,6 +11,12 @@
             "email": "packagist@cadastro.dona.to"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/guilhermednt/php-circuit-breaker-bundle"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "liip/monitor-bundle": "^2.2"
@@ -18,7 +24,8 @@
     "require-dev": {
         "symfony/expression-language": "~2.4|~3.0",
         "symfony/phpunit-bridge": "~2.7|~3.0",
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "4.*",
+        "ejsmont-artur/php-circuit-breaker-bundle": "dev-master"
     },
     "suggest": {
         "ejsmont-artur/php-circuit-breaker-bundle": "Allows a Circuit Breaker to be notified of a check's failure."
