@@ -45,7 +45,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                     ->booleanNode('verify_https')
                                         ->info('When false, errors such as invalid TLS certificates will be ignored')
-                                        ->defaultFalse()
+                                        ->defaultTrue()
                                     ->end()
                                     ->scalarNode('circuit_breaker_service_id')->end()
                                 ->end()
