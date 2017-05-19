@@ -10,8 +10,6 @@
 
 namespace PROCERGS\LoginCidadao\MonitorBundle\Check;
 
-
-use BeSimple\SoapClient\SoapClient;
 use ZendDiagnostics\Check\CheckInterface;
 use ZendDiagnostics\Result\Failure;
 use ZendDiagnostics\Result\ResultInterface;

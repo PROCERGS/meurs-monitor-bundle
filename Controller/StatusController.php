@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class StatusController extends Controller
 {
-
     /**
      * @Route("/public/status/{check}", defaults={"check" = null})
      * @Template()
@@ -41,7 +40,7 @@ class StatusController extends Controller
 
     /**
      *
-     * @return Runner
+     * @return Runner|object
      */
     private function getRunner()
     {
