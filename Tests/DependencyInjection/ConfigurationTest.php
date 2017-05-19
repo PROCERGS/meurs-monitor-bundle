@@ -2,7 +2,6 @@
 
 namespace PROCERGS\LoginCidadao\MonitorBundle\Tests\DependencyInjection;
 
-
 use PROCERGS\LoginCidadao\MonitorBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -56,25 +55,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $config);
     }
 
-    public function testCircuitBreaker()
-    {
-        $configs = [
-            ['circuit_breaker' => 'circuit_breaker.service'],
-        ];
-
-        $processor = new Processor();
-        $config = $processor->processConfiguration(new Configuration(), $configs);
-
-        $expected = self::getBundleDefaultConfig();
-        $expected['circuit_breaker'] = 'circuit_breaker.service';
-
-        $this->assertEquals($expected, $config);
-    }
-
     protected static function getBundleDefaultConfig()
     {
-        return [
-            'circuit_breaker' => null
-        ];
+        return [];
     }
 }

@@ -24,8 +24,7 @@
     "require-dev": {
         "symfony/expression-language": "~2.4|~3.0",
         "symfony/phpunit-bridge": "~2.7|~3.0",
-        "phpunit/phpunit": "4.*",
-        "ejsmont-artur/php-circuit-breaker-bundle": "dev-master"
+        "phpunit/phpunit": "4.*"
     },
     "suggest": {
         "ejsmont-artur/php-circuit-breaker-bundle": "Allows a Circuit Breaker to be notified of a check's failure."

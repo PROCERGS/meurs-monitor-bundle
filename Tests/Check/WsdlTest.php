@@ -14,58 +14,6 @@ use PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl;
 
 class WsdlTest extends \PHPUnit_Framework_TestCase
 {
-    public function testStringToSetCircuitBreaker()
-    {
-        try {
-            $this->getWsdlCheck()->setCircuitBreaker('foo');
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\RuntimeException', $e);
-        }
-    }
-
-    public function testObjectToSetCircuitBreaker()
-    {
-        try {
-            $this->getWsdlCheck()->setCircuitBreaker(new \DateTime());
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\RuntimeException', $e);
-        }
-    }
-
-    public function testNullToSetCircuitBreaker()
-    {
-        try {
-            $this->getWsdlCheck()->setCircuitBreaker(null);
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\RuntimeException', $e);
-        }
-    }
-
-    public function testSetCircuitBreaker()
-    {
-        $circuitBreaker = $this->getMockBuilder('Ejsmont\CircuitBreaker\CircuitBreakerInterface')->getMock();
-
-        try {
-            $this->getWsdlCheck()->setCircuitBreaker($circuitBreaker);
-            $this->assertTrue(true);
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-        }
-    }
-
-    public function testCircuitBreakerNotification()
-    {
-        $circuitBreaker = $this->prophesize('Ejsmont\CircuitBreaker\CircuitBreakerInterface');
-        $circuitBreaker->reportFailure('service')->shouldBeCalled();
-
-        $checker = $this->getWsdlCheck();
-
-        $checker->setCircuitBreaker($circuitBreaker->reveal())
-            ->setCircuitBreakerServiceId('service');
-
-        $checker->check();
-    }
-
     public function testCheckFails()
     {
         $checker = $this->getWsdlCheck();
