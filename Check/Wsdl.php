@@ -26,12 +26,6 @@ class Wsdl implements CheckInterface
     /** @var resource */
     private $context;
 
-    /** @var object */
-    private $circuitBreaker;
-
-    /** @var string */
-    private $circuitBreakerServiceId;
-
     /**
      * Wsdl constructor.
      * @param $wsdlUrl
@@ -106,55 +100,13 @@ class Wsdl implements CheckInterface
         return $this->label ?: 'WSDL Check';
     }
 
-    /**
-     * @param object $circuitBreaker
-     * @return Wsdl
-     */
-    public function setCircuitBreaker($circuitBreaker)
-    {
-        $circuitBreakerInterface = 'Ejsmont\CircuitBreaker\CircuitBreakerInterface';
-        if (false === is_subclass_of($circuitBreaker, $circuitBreakerInterface)) {
-            // Only checking if CircuitBreakerInterface exists if the object doesn't implement it
-            // This allows Unit Testing
-            if (false === interface_exists($circuitBreakerInterface)) {
-                throw new \RuntimeException('Circuit Breaker notifying requires ejsmont-artur/php-circuit-breaker');
-            }
-
-            $class = get_class($circuitBreaker);
-            throw new \RuntimeException("Expected instance of $circuitBreakerInterface but got $class");
-        }
-
-        $this->circuitBreaker = $circuitBreaker;
-
-        return $this;
-    }
-
-    /**
-     * @param string $circuitBreakerServiceId
-     * @return Wsdl
-     */
-    public function setCircuitBreakerServiceId($circuitBreakerServiceId)
-    {
-        $this->circuitBreakerServiceId = $circuitBreakerServiceId;
-
-        return $this;
-    }
-
     private function success()
     {
-        if ($this->circuitBreaker && $this->circuitBreakerServiceId) {
-            $this->circuitBreaker->reportSuccess($this->circuitBreakerServiceId);
-        }
-
         return new Success();
     }
 
     private function failure()
     {
-        if ($this->circuitBreaker && $this->circuitBreakerServiceId) {
-            $this->circuitBreaker->reportFailure($this->circuitBreakerServiceId);
-        }
-
         return new Failure();
     }
 }
