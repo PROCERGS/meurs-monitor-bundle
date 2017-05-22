@@ -2,16 +2,22 @@
 
 namespace PROCERGS\LoginCidadao\MonitorBundle\Tests\DependencyInjection;
 
-use PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl;
 use PROCERGS\LoginCidadao\MonitorBundle\DependencyInjection\PROCERGSLoginCidadaoMonitorExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoadSetParameters()
     {
+        $cbServiceId = 'my.service.id';
+        $cbLabel = 'My CB Monitor';
+        $cbService = new Definition('Eljam\CircuitBreaker\Breaker');
+        $cbService->setArguments(['dummy']);
+
         $container = $this->createContainer();
+        $container->setDefinition($cbServiceId, $cbService);
         $container->registerExtension(new PROCERGSLoginCidadaoMonitorExtension());
         $container->loadFromExtension(
             'procergs_login_cidadao_monitor',
@@ -23,17 +29,25 @@ class PROCERGSLoginCidadaoMonitorExtensionTest extends \PHPUnit_Framework_TestCa
                         ],
                         'test2' => ['url' => 'https://lerolero'],
                     ],
+                    'circuit_breaker' => [
+                        'my_cb' => [
+                            'label' => $cbLabel,
+                            'service_id' => $cbServiceId,
+                        ],
+                    ],
                 ],
             ]
         );
         $this->compileContainer($container);
 
-        /** @var Wsdl $service1 */
         $service1 = $container->get('procergs.monitor.check.wsdl.test1');
         $service2 = $container->get('procergs.monitor.check.wsdl.test2');
+        $service3 = $container->get('procergs.monitor.check.circuit_breaker.my_cb');
 
         $this->assertInstanceOf('PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl', $service1);
         $this->assertInstanceOf('PROCERGS\LoginCidadao\MonitorBundle\Check\Wsdl', $service2);
+        $this->assertInstanceOf('PROCERGS\LoginCidadao\MonitorBundle\Check\CircuitBreaker', $service3);
+        $this->assertEquals($cbLabel, $service3->getLabel());
     }
 
     /**

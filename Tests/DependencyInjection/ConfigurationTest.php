@@ -35,6 +35,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'wsdl' => [
                         'test1' => ['url' => 'https://lerolero'],
                     ],
+                    'circuit_breaker' => [
+                        'my_cb' => ['label' => 'My CB Monitor', 'service_id' => 'my.service.id'],
+                    ],
                 ],
             ],
         ];
@@ -49,6 +52,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'url' => 'https://lerolero',
                     'label' => null,
                     'verify_https' => true,
+                ],
+            ],
+            'circuit_breaker' => [
+                'my_cb' => [
+                    'label' => 'My CB Monitor',
+                    'service_id' => 'my.service.id',
                 ],
             ],
         ];

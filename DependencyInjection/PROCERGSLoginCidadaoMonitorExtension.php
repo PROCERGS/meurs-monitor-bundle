@@ -4,6 +4,8 @@ namespace PROCERGS\LoginCidadao\MonitorBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -21,8 +23,13 @@ class PROCERGSLoginCidadaoMonitorExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        if (!empty($config['checks']) && !empty($config['checks']['wsdl'])) {
-            $this->registerWsdlChecks($config['checks']['wsdl'], $container);
+        if (!empty($config['checks'])) {
+            if (!empty($config['checks']['wsdl'])) {
+                $this->registerWsdlChecks($config['checks']['wsdl'], $container);
+            }
+            if (!empty($config['checks']['circuit_breaker'])) {
+                $this->registerCBChecks($config['checks']['circuit_breaker'], $container);
+            }
         }
     }
 
@@ -38,6 +45,16 @@ class PROCERGSLoginCidadaoMonitorExtension extends Extension
             $check->setArguments([$options['url'], $options['label'], $options['verify_https']]);
             $check->addTag('liip_monitor.check', ['alias' => "wsdl_check_$name"]);
             $container->setDefinition("procergs.monitor.check.wsdl.$name", $check);
+        }
+    }
+
+    private function registerCBChecks($checks, ContainerBuilder $container)
+    {
+        foreach ($checks as $name => $options) {
+            $check = new Definition('PROCERGS\LoginCidadao\MonitorBundle\Check\CircuitBreaker');
+            $check->setArguments([new Reference($options['service_id']), $options['label']]);
+            $check->addTag('liip_monitor.check', ['alias' => "circuit_breaker_check_{$name}"]);
+            $container->setDefinition("procergs.monitor.check.circuit_breaker.{$name}", $check);
         }
     }
 }
