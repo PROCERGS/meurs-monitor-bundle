@@ -28,8 +28,7 @@ class StatusController extends Controller
 
         if (count($results['results']) === 1) {
             $result = reset($results['results']);
-            echo $result['result'];
-            die();
+            return new Response($result['result'], $results['statusCode']);
         }
 
         $template = 'PROCERGSLoginCidadaoMonitorBundle:Status:index.html.twig';
