@@ -55,7 +55,7 @@ class StatusController extends Controller
                 'check' => $result['checkName'],
                 'code' => $result['status']
             );
-            if ($result['status'] === 0) {
+            if ($result['status'] === 0 || $result['status'] === 3) {
                 $status['result'] = '0-OK';
             } else {
                 $status['result'] = '1-NOK';
